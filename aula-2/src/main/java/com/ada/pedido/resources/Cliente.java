@@ -1,4 +1,4 @@
-package com.ada.pedido.resources.dto;
+package com.ada.pedido.resources;
 
 public class Cliente {
     private Long id;

@@ -1,10 +1,5 @@
 package com.ada.pedido.resources;
 
-import com.ada.pedido.resources.dto.Cliente;
-import io.quarkus.security.Authenticated;
-import jakarta.annotation.security.PermitAll;
-import jakarta.annotation.security.RolesAllowed;
-import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
