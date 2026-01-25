@@ -9,8 +9,8 @@
     <version>1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <modules>
-        <module>aula-1</module>
         <module>aula-2</module>
+        <module>aula-3</module>
     </modules>
 
 </project>
