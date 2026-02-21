@@ -23,7 +23,6 @@ public class ClienteResource {
     }
 
     @POST
-    @PermitAll  //Endpoint público
     @Transactional
     public Response criar(@Valid ClienteDTO cliente) {
 
