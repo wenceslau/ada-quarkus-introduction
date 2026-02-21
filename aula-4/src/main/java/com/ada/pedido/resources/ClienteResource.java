@@ -1,7 +1,8 @@
 package com.ada.pedido.resources;
 
-import com.ada.pedido.repositorios.Cliente;
-import com.ada.pedido.repositorios.ClienteRepository;
+import com.ada.pedido.repository.Cliente;
+import com.ada.pedido.repository.ClienteRepository;
+import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -19,6 +20,7 @@ public class ClienteResource {
     }
 
     @POST
+    @Transactional
     public Response create(Cliente cliente) {
 
        clienteRepository.persist(cliente);
@@ -58,6 +60,7 @@ public class ClienteResource {
 
     @PUT
     @Path("/{id}")
+    @Transactional
     public Response update(@PathParam("id") Long id, Cliente cliente) {
 
         var clienteOptional = clienteRepository.findByIdOptional(id);
@@ -82,6 +85,7 @@ public class ClienteResource {
 
     @PATCH
     @Path("/{id}")
+    @Transactional
     public Response partialUpdate(@PathParam("id") Long id, Cliente cliente) {
 
         var clienteOptional = clienteRepository.findByIdOptional(id);
@@ -111,6 +115,7 @@ public class ClienteResource {
 
     @DELETE
     @Path("/{id}")
+    @Transactional
     public Response delete(@PathParam("id") Long id) {
 
         clienteRepository.deleteById(id);

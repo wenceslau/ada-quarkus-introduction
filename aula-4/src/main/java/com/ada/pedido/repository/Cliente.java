@@ -1,8 +1,6 @@
-package com.ada.pedido.repositorios;
+package com.ada.pedido.repository;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "clientes")
