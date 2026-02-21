@@ -1,6 +1,6 @@
 package com.ada.pedido.resources;
 
-import com.ada.pedido.repositorios.ClienteRepository;
+import com.ada.pedido.repository.ClienteRepository;
 import com.ada.pedido.resources.dto.ClienteDTO;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;

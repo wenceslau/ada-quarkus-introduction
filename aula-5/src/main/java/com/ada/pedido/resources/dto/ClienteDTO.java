@@ -1,6 +1,6 @@
 package com.ada.pedido.resources.dto;
 
-import com.ada.pedido.repositorios.Cliente;
+import com.ada.pedido.repository.Cliente;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
