@@ -1,6 +1,5 @@
 package com.ada.pedido.security;
 
-
 import com.ada.pedido.repository.ClienteRepository;
 import com.ada.pedido.security.jwt.JWTService;
 import io.quarkus.elytron.security.common.BcryptUtil;
@@ -19,9 +18,11 @@ import java.util.Set;
 @Path("/login")
 public class LoginResource {
 
+    private final JWTService jwtService;
     private final ClienteRepository clienteRepository;
 
-    public LoginResource(ClienteRepository clienteRepository) {
+    public LoginResource(JWTService jwtService, ClienteRepository clienteRepository) {
+        this.jwtService = jwtService;
         this.clienteRepository = clienteRepository;
     }
 
@@ -44,11 +45,12 @@ public class LoginResource {
                     .build();
         }
 
-        String token = JWTService.criarToken(
+        String token = jwtService.criarToken(
                 cliente.getEmail(), Set.of(cliente.getTipoUsuario().name())
         );
 
-        return Response.ok(new LoginResponse(token)).build();
+        return Response.ok(new LoginResponse(token))
+                .build();
     }
 
 }

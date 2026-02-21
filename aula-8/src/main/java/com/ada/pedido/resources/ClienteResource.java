@@ -2,6 +2,7 @@ package com.ada.pedido.resources;
 
 import com.ada.pedido.resources.dto.ClienteDTO;
 import com.ada.pedido.resources.dto.ClienteResponseDTO;
+import com.ada.pedido.repository.entities.TipoUsuarioEnum;
 import com.ada.pedido.services.ClienteService;
 import io.quarkus.security.Authenticated;
 import jakarta.annotation.security.PermitAll;
@@ -29,7 +30,12 @@ public class ClienteResource {
     @Transactional
     public Response criar(@Valid ClienteDTO clienteDTO) {
 
-        var clienteCriado = clienteService.salvarCliente(clienteDTO.criarEntidade());
+        var entidade = clienteDTO.criarEntidade();
+
+        // RN: O cadastro publico sempre cria um CLIENTE, nunca um ADMIN
+        entidade.setTipoUsuario(TipoUsuarioEnum.CLIENTE);
+
+        var clienteCriado = clienteService.salvarCliente(entidade);
 
         return Response
                 .status(Response.Status.CREATED)

@@ -16,9 +16,9 @@ public class JWTService {
 
     private static final Logger log = Logger.getLogger(JWTService.class.getName());
 
-    private static final String ISSUER = "https://issuer.org";
+    private static final String ISSUER = "https://ada.com";
     private static final long DURATION = 1800; // 1/2 hour in seconds
-    public static final String SECRET = "4453fd5e8408dc24655669d0a37ef72e";
+    private static final String SECRET = "4453fd5e8408dc24655669d0a37ef72e";
 
     public static String criarToken(String username, Set<String> roles) {
         JwtClaimsBuilder claimsBuilder = Jwt.claims()

@@ -5,34 +5,32 @@ import com.nimbusds.jwt.SignedJWT;
 import io.smallrye.jwt.auth.principal.ParseException;
 import io.smallrye.jwt.build.Jwt;
 import io.smallrye.jwt.build.JwtClaimsBuilder;
+import jakarta.enterprise.context.ApplicationScoped;
 
 import java.time.Instant;
 import java.util.Date;
 import java.util.Set;
 import java.util.logging.Logger;
 
-
+@ApplicationScoped
 public class JWTService {
 
     private static final Logger log = Logger.getLogger(JWTService.class.getName());
+    private static final String ISSUER = "https://ada.com";
+    private static final String SECRET = "4453fd5e8408dc24655669d0a37ef72e";
 
-    private static final String ISSUER = "https://issuer.org";
-    private static final long DURATION = 1800; // 1/2 hour in seconds
-    public static final String SECRET = "4453fd5e8408dc24655669d0a37ef72e";
-
-    public static String criarToken(String username, Set<String> roles) {
+    public String criarToken(String username, Set<String> roles) {
         JwtClaimsBuilder claimsBuilder = Jwt.claims()
                 .issuer(ISSUER)
                 .subject(username)
                 .issuedAt(Instant.now())
-                .expiresAt(Instant.now().plusSeconds(DURATION))
+                .expiresAt(Instant.now().plusSeconds(1800)) //0.5 hora
                 .groups(roles);
-
 
         return claimsBuilder.jws().signWithSecret(SECRET);
     }
 
-    public static void validarToken(String token) throws ParseException {
+    public void validarToken(String token) throws ParseException {
         SignedJWT signedJWT;
         try {
             signedJWT = SignedJWT.parse(token);

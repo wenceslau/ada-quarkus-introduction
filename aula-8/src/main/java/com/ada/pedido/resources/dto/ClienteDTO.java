@@ -11,15 +11,13 @@ import jakarta.validation.constraints.Size;
 public record ClienteDTO(
         @NotBlank(message = "Nome é obrigatório") String nome,
         @NotBlank @Email(message = "Email inválido") String email,
-        @NotBlank @Size(min = 8, max = 20) String senha,
-        @NotNull TipoUsuarioEnum tipoUsuario) {
+        @NotBlank @Size(min = 8, max = 20) String senha) {
 
     public Cliente criarEntidade() {
         var cliente = new Cliente();
         cliente.setNome(nome);
         cliente.setEmail(email);
         cliente.setSenha(BcryptUtil.bcryptHash(senha));
-        cliente.setTipoUsuario(tipoUsuario);
         return cliente;
     }
 
@@ -27,7 +25,6 @@ public record ClienteDTO(
         cliente.setNome(nome);
         cliente.setEmail(email);
         cliente.setSenha(BcryptUtil.bcryptHash(senha));
-        cliente.setTipoUsuario(tipoUsuario);
     }
 
     public void copiarParaEntidadeNaoNulo(Cliente cliente) {
@@ -39,12 +36,8 @@ public record ClienteDTO(
             cliente.setEmail(email);
         }
 
-        if (senha != null){
+        if (senha != null) {
             cliente.setSenha(BcryptUtil.bcryptHash(senha));
-        }
-
-        if(tipoUsuario != null){
-            cliente.setTipoUsuario(tipoUsuario);
         }
     }
 
@@ -52,9 +45,7 @@ public record ClienteDTO(
         return new ClienteDTO(
                 cliente.getNome(),
                 cliente.getEmail(),
-                null,
-                cliente.getTipoUsuario()
-        );
+                null);
     }
 
 }
