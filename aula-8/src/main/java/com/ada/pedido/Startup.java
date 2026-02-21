@@ -2,7 +2,7 @@ package com.ada.pedido;
 
 import com.ada.pedido.repository.ClienteRepository;
 import com.ada.pedido.repository.entities.Cliente;
-import com.ada.pedido.repository.entities.TipoUsuarioEnum;
+import com.ada.pedido.repository.entities.TipoUsuario;
 import io.quarkus.elytron.security.common.BcryptUtil;
 import io.quarkus.runtime.StartupEvent;
 import jakarta.enterprise.event.Observes;
@@ -19,7 +19,7 @@ public class Startup {
             admin.setNome("Admin");
             admin.setEmail("admin@ada.com");
             admin.setSenha(BcryptUtil.bcryptHash("12345678"));
-            admin.setTipoUsuario(TipoUsuarioEnum.ADMIN);
+            admin.setTipoUsuario(TipoUsuario.ADMIN);
             repository.persist(admin);
         }
     }

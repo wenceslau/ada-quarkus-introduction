@@ -1,6 +1,6 @@
 package com.ada.pedido.repository.entities;
 
-public enum TipoUsuarioEnum {
+public enum TipoUsuario {
 
     CLIENTE,
     ADMIN

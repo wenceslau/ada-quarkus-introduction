@@ -20,7 +20,7 @@ public class Cliente {
     private String senha;
 
     @Enumerated(EnumType.STRING)
-    private TipoUsuarioEnum tipoUsuario;
+    private TipoUsuario tipoUsuario;
 
     public Long getId() {
         return id;
@@ -54,11 +54,11 @@ public class Cliente {
         this.senha = senha;
     }
 
-    public TipoUsuarioEnum getTipoUsuario() {
+    public TipoUsuario getTipoUsuario() {
         return tipoUsuario;
     }
 
-    public void setTipoUsuario(TipoUsuarioEnum tipoUsuario) {
+    public void setTipoUsuario(TipoUsuario tipoUsuario) {
         this.tipoUsuario = tipoUsuario;
     }
 }

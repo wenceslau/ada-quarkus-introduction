@@ -1,11 +1,9 @@
 package com.ada.pedido.resources.dto;
 
 import com.ada.pedido.repository.entities.Cliente;
-import com.ada.pedido.repository.entities.TipoUsuarioEnum;
 import io.quarkus.elytron.security.common.BcryptUtil;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public record ClienteDTO(
