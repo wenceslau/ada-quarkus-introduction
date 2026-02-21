@@ -1,0 +1,53 @@
+package com.ada.pedido.security;
+
+
+import com.ada.pedido.repository.ClienteRepository;
+import com.ada.pedido.security.jwt.JWTService;
+import jakarta.annotation.security.PermitAll;
+import jakarta.validation.Valid;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
+
+import java.util.Set;
+
+
+@Path("/login")
+public class LoginResource {
+
+    private final ClienteRepository clienteRepository;
+
+    public LoginResource(ClienteRepository clienteRepository) {
+        this.clienteRepository = clienteRepository;
+    }
+
+    @POST
+    @PermitAll
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response login(@Valid LoginRequest loginDto) {
+
+        var optional = clienteRepository.buscarPorEmail(loginDto.email());
+        if (optional.isEmpty()) {
+            return Response
+                    .status(Response.Status.UNAUTHORIZED)
+                    .build();
+        }
+        var cliente = optional.get();
+        if (!cliente.getSenha().equals(PasswordUtils.encode(loginDto.senha()))) {
+            return Response
+                    .status(Response.Status.UNAUTHORIZED)
+                    .build();
+        }
+
+        String token = JWTService.criarToken(
+                cliente.getEmail(), Set.of(cliente.getTipoUsuario().name())
+        );
+
+        return Response.ok(new LoginResponse(token)).build();
+    }
+
+}
