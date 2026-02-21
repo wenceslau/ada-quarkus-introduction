@@ -23,7 +23,7 @@ public class ClienteResource {
     @Transactional
     public Response çriar(@Valid ClienteDTO cliente) {
 
-       clienteRepository.persist(cliente.toEntity());
+       clienteRepository.persist(cliente.criarEntidade());
 
         return Response
                 .status(Response.Status.CREATED)
@@ -72,8 +72,7 @@ public class ClienteResource {
         }
 
         var clienteAhAtualizar = clienteOptional.get();
-        clienteAhAtualizar.setNome(cliente.nome());
-        clienteAhAtualizar.setEmail(cliente.email());
+        cliente.copiarParaEntidade(clienteAhAtualizar);
 
         clienteRepository.persist(clienteAhAtualizar);
 
@@ -102,14 +101,7 @@ public class ClienteResource {
                     .build();
         }
         var clienteAhAtualizar = clienteOptional.get();
-
-        if (cliente.nome() != null) {
-            clienteAhAtualizar.setNome(cliente.nome());
-        }
-
-        if (cliente.email() != null) {
-            clienteAhAtualizar.setEmail(cliente.email());
-        }
+        cliente.copiarParaEntidadeNaoNulo(clienteAhAtualizar);
 
         clienteRepository.persist(clienteAhAtualizar);
 

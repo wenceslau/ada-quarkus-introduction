@@ -2,7 +2,7 @@ package com.ada.pedido.resources.dto;
 
 import com.ada.pedido.repository.entities.Cliente;
 import com.ada.pedido.repository.entities.TipoUsuarioEnum;
-import com.ada.pedido.security.PasswordUtils;
+import io.quarkus.elytron.security.common.BcryptUtil;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -14,23 +14,23 @@ public record ClienteDTO(
         @NotBlank @Size(min = 8, max = 20) String senha,
         @NotNull TipoUsuarioEnum tipoUsuario) {
 
-    public Cliente toEntity() {
+    public Cliente criarEntidade() {
         var cliente = new Cliente();
         cliente.setNome(nome);
         cliente.setEmail(email);
-        cliente.setSenha(PasswordUtils.encode(senha));
+        cliente.setSenha(BcryptUtil.bcryptHash(senha));
         cliente.setTipoUsuario(tipoUsuario);
         return cliente;
     }
 
-    public void copyTo(Cliente cliente) {
+    public void copiarParaEntidade(Cliente cliente) {
         cliente.setNome(nome);
         cliente.setEmail(email);
-        cliente.setSenha(PasswordUtils.encode(senha));
+        cliente.setSenha(BcryptUtil.bcryptHash(senha));
         cliente.setTipoUsuario(tipoUsuario);
     }
 
-    public void copyToButNotNull(Cliente cliente) {
+    public void copiarParaEntidadeNaoNulo(Cliente cliente) {
         if (nome != null) {
             cliente.setNome(nome);
         }
@@ -40,12 +40,21 @@ public record ClienteDTO(
         }
 
         if (senha != null){
-            cliente.setSenha(PasswordUtils.encode(senha));
+            cliente.setSenha(BcryptUtil.bcryptHash(senha));
         }
 
         if(tipoUsuario != null){
             cliente.setTipoUsuario(tipoUsuario);
         }
+    }
+
+    public static ClienteDTO criarDeEntidade(Cliente cliente) {
+        return new ClienteDTO(
+                cliente.getNome(),
+                cliente.getEmail(),
+                null,
+                cliente.getTipoUsuario()
+        );
     }
 
 }

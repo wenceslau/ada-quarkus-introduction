@@ -3,6 +3,7 @@ package com.ada.pedido.security;
 
 import com.ada.pedido.repository.ClienteRepository;
 import com.ada.pedido.security.jwt.JWTService;
+import io.quarkus.elytron.security.common.BcryptUtil;
 import jakarta.annotation.security.PermitAll;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
@@ -37,7 +38,7 @@ public class LoginResource {
                     .build();
         }
         var cliente = optional.get();
-        if (!cliente.getSenha().equals(PasswordUtils.encode(loginDto.senha()))) {
+        if (!BcryptUtil.matches(loginDto.senha(), cliente.getSenha())) {
             return Response
                     .status(Response.Status.UNAUTHORIZED)
                     .build();

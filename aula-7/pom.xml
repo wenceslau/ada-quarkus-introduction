@@ -15,7 +15,7 @@
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <quarkus.platform.version>3.5.0</quarkus.platform.version>  <!-- 1 - Versão do Quarkus  -->
+        <quarkus.platform.version>3.27.2</quarkus.platform.version>  <!-- 1 - Versão do Quarkus  -->
     </properties>
 
     <dependencies>  <!-- 3 - Dependências -->
@@ -47,12 +47,6 @@
             <artifactId>quarkus-jdbc-h2</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <scope>runtime</scope>
-        </dependency>
-
         <!-- Security dependencies -->
         <dependency>
             <groupId>io.quarkus</groupId>
@@ -67,12 +61,12 @@
             <artifactId>quarkus-smallrye-jwt-build</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.nimbusds</groupId>
-            <artifactId>nimbus-jose-jwt</artifactId>
-        </dependency>
-        <dependency>
             <groupId>io.quarkus</groupId>
             <artifactId>quarkus-elytron-security-properties-file</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.nimbusds</groupId>
+            <artifactId>nimbus-jose-jwt</artifactId>
         </dependency>
 
     </dependencies>

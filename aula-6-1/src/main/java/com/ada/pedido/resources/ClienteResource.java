@@ -24,9 +24,10 @@ public class ClienteResource {
 
     @POST
     @Transactional
+    @PermitAll
     public Response criar(@Valid ClienteDTO cliente) {
 
-       clienteRepository.persist(cliente.toEntity());
+       clienteRepository.persist(cliente.criarEntidade());
 
         return Response
                 .status(Response.Status.CREATED)
@@ -54,10 +55,15 @@ public class ClienteResource {
     @GET
     public Response buscarTodos() {
 
-        var listPaginada = clienteRepository.findAll();
+        var listaPaginada = clienteRepository.findAll();
+
+        var list = listaPaginada.list()
+                .stream()
+                .map(ClienteDTO::criarDeEntidade)
+                .toList();
 
         return Response
-                .ok(listPaginada.list())
+                .ok(list)
                 .build();
     }
 
@@ -75,7 +81,7 @@ public class ClienteResource {
         }
 
         var clienteAhAtualizar = clienteOptional.get();
-        cliente.copyTo(clienteAhAtualizar);
+        cliente.copiarParaEntidade(clienteAhAtualizar);
 
         clienteRepository.persist(clienteAhAtualizar);
 
@@ -104,7 +110,7 @@ public class ClienteResource {
                     .build();
         }
         var clienteAhAtualizar = clienteOptional.get();
-        cliente.copyToButNotNull(clienteAhAtualizar);
+        cliente.copiarParaEntidadeNaoNulo(clienteAhAtualizar);
 
         clienteRepository.persist(clienteAhAtualizar);
 

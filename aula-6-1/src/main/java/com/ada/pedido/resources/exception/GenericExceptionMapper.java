@@ -29,7 +29,7 @@ public class GenericExceptionMapper implements ExceptionMapper<Throwable> {
         } else if (exception instanceof org.hibernate.exception.ConstraintViolationException) {
             final ErrorResponse errorResponse = new ErrorResponse(
                     exception.getClass().getName(),
-                    "Registro já existe na base de dados",
+                    "Registro já existe",
                     LocalDateTime.now()
             );
             return Response.status(Response.Status.BAD_REQUEST)
