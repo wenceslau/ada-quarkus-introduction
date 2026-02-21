@@ -39,11 +39,4 @@ public record ClienteDTO(
         }
     }
 
-    public static ClienteDTO criarDeEntidade(Cliente cliente) {
-        return new ClienteDTO(
-                cliente.getNome(),
-                cliente.getEmail(),
-                null);
-    }
-
 }
