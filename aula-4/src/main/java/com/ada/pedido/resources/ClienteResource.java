@@ -21,7 +21,7 @@ public class ClienteResource {
 
     @POST
     @Transactional
-    public Response create(Cliente cliente) {
+    public Response criar(Cliente cliente) {
 
        clienteRepository.persist(cliente);
 
@@ -33,7 +33,7 @@ public class ClienteResource {
 
     @GET
     @Path("/{clienteId}")
-    public Response findById(@PathParam("clienteId") Long id) {
+    public Response buscarPorId(@PathParam("clienteId") Long id) {
 
         var clienteOptional = clienteRepository.findByIdOptional(id);
 
@@ -49,7 +49,7 @@ public class ClienteResource {
     }
 
     @GET
-    public Response findAll() {
+    public Response buscarTodos() {
 
         var listPaginada = clienteRepository.findAll();
 
@@ -61,7 +61,7 @@ public class ClienteResource {
     @PUT
     @Path("/{id}")
     @Transactional
-    public Response update(@PathParam("id") Long id, Cliente cliente) {
+    public Response atualizar(@PathParam("id") Long id, Cliente cliente) {
 
         var clienteOptional = clienteRepository.findByIdOptional(id);
 
@@ -86,7 +86,7 @@ public class ClienteResource {
     @PATCH
     @Path("/{id}")
     @Transactional
-    public Response partialUpdate(@PathParam("id") Long id, Cliente cliente) {
+    public Response atualizacaoParcial(@PathParam("id") Long id, Cliente cliente) {
 
         var clienteOptional = clienteRepository.findByIdOptional(id);
 
@@ -116,7 +116,7 @@ public class ClienteResource {
     @DELETE
     @Path("/{id}")
     @Transactional
-    public Response delete(@PathParam("id") Long id) {
+    public Response deletar(@PathParam("id") Long id) {
 
         clienteRepository.deleteById(id);
 

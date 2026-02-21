@@ -2,16 +2,13 @@ package com.ada.pedido.resources;
 
 import com.ada.pedido.repository.ClienteRepository;
 import com.ada.pedido.resources.dto.ClienteDTO;
-import com.ada.pedido.security.PasswordUtils;
 import io.quarkus.security.Authenticated;
 import jakarta.annotation.security.PermitAll;
-import jakarta.annotation.security.RolesAllowed;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import org.wildfly.security.util.PasswordUtil;
 
 @Authenticated
 @Path("/clientes")
@@ -28,7 +25,7 @@ public class ClienteResource {
     @POST
     @PermitAll  //Endpoint público
     @Transactional
-    public Response create(@Valid ClienteDTO cliente) {
+    public Response criar(@Valid ClienteDTO cliente) {
 
        clienteRepository.persist(cliente.toEntity());
 
@@ -40,7 +37,7 @@ public class ClienteResource {
 
     @GET
     @Path("/{clienteId}")
-    public Response findById(@PathParam("clienteId") Long id) {
+    public Response buscarPorId(@PathParam("clienteId") Long id) {
 
         var clienteOptional = clienteRepository.findByIdOptional(id);
 
@@ -56,7 +53,7 @@ public class ClienteResource {
     }
 
     @GET
-    public Response findAll() {
+    public Response buscarTodos() {
 
         var listPaginada = clienteRepository.findAll();
 
@@ -68,7 +65,7 @@ public class ClienteResource {
     @PUT
     @Transactional
     @Path("/{id}")
-    public Response update(@PathParam("id") Long id, @Valid ClienteDTO cliente) {
+    public Response atualizar(@PathParam("id") Long id, @Valid ClienteDTO cliente) {
 
         var clienteOptional = clienteRepository.findByIdOptional(id);
 
@@ -91,7 +88,7 @@ public class ClienteResource {
     @PATCH
     @Transactional
     @Path("/{id}")
-    public Response partialUpdate(@PathParam("id") Long id, ClienteDTO cliente) {
+    public Response atualizacaoParcial(@PathParam("id") Long id, ClienteDTO cliente) {
 
         if (cliente.nome() != null && cliente.nome().isEmpty()) {
             throw new IllegalArgumentException("Nome não pode ser vazio!");
@@ -120,7 +117,7 @@ public class ClienteResource {
 
     @DELETE
     @Path("/{id}")
-    public Response delete(@PathParam("id") Long id) {
+    public Response deletar(@PathParam("id") Long id) {
 
         clienteRepository.deleteById(id);
 

@@ -15,7 +15,7 @@ public class ClienteResource {
     private final List<Cliente> clientes = new ArrayList<>();
 
     @POST
-    public Response create(Cliente cliente) {
+    public Response criar(Cliente cliente) {
 
         cliente.setId(clientes.size() + 1L);
         clientes.add(cliente);
@@ -28,7 +28,7 @@ public class ClienteResource {
 
     @GET
     @Path("/{clienteId}")
-    public Response findById(@PathParam("clienteId") Long id) {
+    public Response buscarPorId(@PathParam("clienteId") Long id) {
         var cliente = clientes.stream()
                 .filter(x -> x.getId().equals(id))
                 .findFirst();
@@ -45,7 +45,7 @@ public class ClienteResource {
     }
 
     @GET
-    public Response findAll() {
+    public Response buscarTodos() {
 
         return Response
                 .ok(clientes)
@@ -54,7 +54,7 @@ public class ClienteResource {
 
     @PUT
     @Path("/{id}")
-    public Response update(@PathParam("id") Long id, Cliente cliente) {
+    public Response atualizar(@PathParam("id") Long id, Cliente cliente) {
 
         var clienteOptional = clientes.stream()
                 .filter(x -> x.getId().equals(id))
@@ -78,7 +78,7 @@ public class ClienteResource {
 
     @PATCH
     @Path("/{id}")
-    public Response partialUpdate(@PathParam("id") Long id, Cliente cliente) {
+    public Response atualizacaoParcial(@PathParam("id") Long id, Cliente cliente) {
 
         var clienteOptional = clientes.stream()
                 .filter(x -> x.getId().equals(id))
@@ -107,7 +107,7 @@ public class ClienteResource {
 
     @DELETE
     @Path("/{id}")
-    public Response delete(@PathParam("id") Long id) {
+    public Response deletar(@PathParam("id") Long id) {
 
         clientes.removeIf(x -> x.getId().equals(id));
 

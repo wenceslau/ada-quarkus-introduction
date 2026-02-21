@@ -9,7 +9,7 @@ import java.util.Optional;
 @ApplicationScoped
 public class ClienteRepository implements PanacheRepositoryBase<Cliente, Long> {
 
-    public Optional<Cliente> findByEmail(String email) {
+    public Optional<Cliente> buscarPorEmail(String email) {
         return find("email", email)
                 .firstResultOptional();
     }

@@ -30,7 +30,7 @@ public class LoginResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response login(@Valid LoginRequest loginDto) {
 
-        var optional = clienteRepository.findByEmail(loginDto.email());
+        var optional = clienteRepository.buscarPorEmail(loginDto.email());
         if (optional.isEmpty()) {
             return Response
                     .status(Response.Status.UNAUTHORIZED)
@@ -43,7 +43,7 @@ public class LoginResource {
                     .build();
         }
 
-        String token = JWTService.createToken(
+        String token = JWTService.criarToken(
                 cliente.getEmail(), Set.of(cliente.getTipoUsuario().name())
         );
 

@@ -21,7 +21,7 @@ public class JWTCustomCallerPrincipal extends JWTCallerPrincipalFactory {
     public JWTCallerPrincipal parse(String token, JWTAuthContextInfo authContextInfo) throws ParseException {
         System.out.println("JWTCustomCallerPrincipal.parse");
 
-        JWTService.validateToken(token);
+        JWTService.validarToken(token);
 
         try {
             String payload = new String(Base64.getUrlDecoder().decode(token.split("\\.")[1]), StandardCharsets.UTF_8);

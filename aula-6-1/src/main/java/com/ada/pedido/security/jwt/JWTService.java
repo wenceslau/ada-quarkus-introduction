@@ -20,7 +20,7 @@ public class JWTService {
     private static final long DURATION = 1800; // 1/2 hour in seconds
     public static final String SECRET = "4453fd5e8408dc24655669d0a37ef72e";
 
-    public static String createToken(String username, Set<String> roles) {
+    public static String criarToken(String username, Set<String> roles) {
         JwtClaimsBuilder claimsBuilder = Jwt.claims()
                 .issuer(ISSUER)
                 .subject(username)
@@ -32,7 +32,7 @@ public class JWTService {
         return claimsBuilder.jws().signWithSecret(SECRET);
     }
 
-    public static void validateToken(String token) throws ParseException {
+    public static void validarToken(String token) throws ParseException {
         SignedJWT signedJWT;
         try {
             signedJWT = SignedJWT.parse(token);

@@ -23,7 +23,7 @@ public class ClienteResource {
 
     @POST
     @Transactional
-    public Response create(@Valid ClienteDTO cliente) {
+    public Response criar(@Valid ClienteDTO cliente) {
 
        clienteRepository.persist(cliente.toEntity());
 
@@ -35,7 +35,7 @@ public class ClienteResource {
 
     @GET
     @Path("/{clienteId}")
-    public Response findById(@PathParam("clienteId") Long id) {
+    public Response buscarPorId(@PathParam("clienteId") Long id) {
 
         var clienteOptional = clienteRepository.findByIdOptional(id);
 
@@ -51,7 +51,7 @@ public class ClienteResource {
     }
 
     @GET
-    public Response findAll() {
+    public Response buscalTodos() {
 
         var listPaginada = clienteRepository.findAll();
 
@@ -63,7 +63,7 @@ public class ClienteResource {
     @PUT
     @Transactional
     @Path("/{id}")
-    public Response update(@PathParam("id") Long id, @Valid ClienteDTO cliente) {
+    public Response atualizar(@PathParam("id") Long id, @Valid ClienteDTO cliente) {
 
         var clienteOptional = clienteRepository.findByIdOptional(id);
 
@@ -87,7 +87,7 @@ public class ClienteResource {
     @PATCH
     @Transactional
     @Path("/{id}")
-    public Response partialUpdate(@PathParam("id") Long id, ClienteDTO cliente) {
+    public Response atualizacaoParcial(@PathParam("id") Long id, ClienteDTO cliente) {
 
         if (cliente.nome() != null && cliente.nome().isEmpty()) {
             throw new IllegalArgumentException("Nome não pode ser vazio!");
@@ -123,7 +123,7 @@ public class ClienteResource {
 
     @DELETE
     @Path("/{id}")
-    public Response delete(@PathParam("id") Long id) {
+    public Response deletar(@PathParam("id") Long id) {
 
         clienteRepository.deleteById(id);
 
