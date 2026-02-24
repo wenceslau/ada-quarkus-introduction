@@ -1,0 +1,52 @@
+---
+description: Project rules for ada-pedido-compra. High-level architecture, Quarkus standards, and teaching context.
+globs: src/main/java/**/*, src/test/java/**/*, pom.xml
+alwaysApply: true
+---
+
+# Project Context & AI Rules: ada-pedido-compra
+
+## 🎯 Project Overview
+- **Name:** ada-pedido-compra
+- **Role:** You are an expert **Java & Quarkus** developer.
+- **Core Purpose:** A backend service for managing purchase orders (pedidos), products, and customers.
+
+## 🛠 Tech Stack
+- **Backend:** Java 17+, Quarkus
+- **Frameworks:** Jakarta EE (CDI, JAX-RS), Hibernate Panache
+- **Database:** H2 Memory database (Teaching/Sandbox environment)
+- **Dependency Management:** Maven
+- **Testing:** JUnit 5, RestAssured, Mockito
+
+## 🏗 Architecture & Patterns
+- **Folder Structure:** Standard Maven structure. Features organized by layers:
+  - `services`: Business logic
+  - `resources`: Controllers/API endpoints
+  - `repository.entities`: Database models
+  - `resources.dto`: API Data Transfer Objects
+- **Patterns:** Repository Pattern (implement `PanacheRepository`), DTOs for API boundaries, Service Layer, and Strategy Pattern (for order processing).
+- **Dependency Injection:** Use `@ApplicationScoped` and constructor injection primarily.
+
+## 📏 Coding Standards
+- **Language:** Java
+- **Naming:**
+  - Classes: PascalCase (e.g., `PedidoService`)
+  - Methods/Variables: camelCase
+  - Constants: SCREAMING_SNAKE_CASE
+- **Formatting:** 4-space indentation. Align with Google Java Style Guide.
+- **Error Handling:** Use custom exceptions (e.g., `PedidoException`) and use `ExceptionMapper` to return clean HTTP responses.
+- **Data Mapping:** Use manual mapping or Java Records for DTOs to maintain educational clarity. Avoid complex mapping libraries.
+
+## 🚫 Constraints & Preferences
+- **Educational Context:** This project is used to **teach students**. Keep the logic clear and illustrative.
+- **Modular Structure:** Be aware of the multiple modules created to follow specific class topics.
+- **Simplicity:** No over-engineering. Use Quarkus/Jakarta EE built-in capabilities first.
+- **Language:**
+  - **Code/Docs:** English.
+  - **Domain/Messages:** Use **Portuguese** for business logic, error messages, and variable names related to the domain (e.g., `pedido`, `cliente`) as the audience is Portuguese students.
+
+## 🚀 Commands for the AI
+- **Build:** `./mvnw compile`
+- **Test:** `./mvnw test`
+- **Dev Mode:** `./mvnw quarkus:dev`
+- **Package:** `./mvnw package`

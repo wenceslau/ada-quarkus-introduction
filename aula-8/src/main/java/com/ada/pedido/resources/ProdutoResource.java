@@ -24,13 +24,10 @@ public class ProdutoResource {
     }
 
     @POST
-    @Transactional
     @RolesAllowed("ADMIN")
     public Response criar(@Valid ProdutoDTO produtoDTO) {
 
-        var produto = produtoDTO.criarEntidade();
-
-        var produtoCriado = produtoService.salvarProduto(produto);
+        var produtoCriado = produtoService.criarProduto(produtoDTO);
 
         return Response
                 .status(Response.Status.CREATED)
@@ -39,34 +36,26 @@ public class ProdutoResource {
     }
 
     @PUT
-    @Transactional
     @RolesAllowed("ADMIN")
     @Path("/{id}")
     public Response atualizar(@PathParam("id") Long id, @Valid ProdutoDTO produtoDTO) {
 
-        var ahAtualizar = produtoService.buscarProdutoPorId(id);
-        produtoDTO.copiarParaEntidade(ahAtualizar);
-
-        var atualizado = produtoService.salvarProduto(ahAtualizar);
+        var produto = produtoService.atualizarProduto(id, produtoDTO);
 
         return Response
-                .ok(ProdutoResponseDTO.criarDeEntidade(atualizado))
+                .ok(ProdutoResponseDTO.criarDeEntidade(produto))
                 .build();
     }
 
     @PATCH
-    @Transactional
     @RolesAllowed("ADMIN")
     @Path("/{id}")
     public Response atualizacaoParcial(@PathParam("id") Long id, ProdutoDTO produtoDTO) {
 
-        var ahAtualizar = produtoService.buscarProdutoPorId(id);
-        produtoDTO.copiarParaEntidadeNaoNulo(ahAtualizar);
-
-        var atualizado = produtoService.salvarProduto(ahAtualizar);
+        var produto = produtoService.atualizarProdutoParcial(id, produtoDTO);
 
         return Response
-                .ok(ProdutoResponseDTO.criarDeEntidade(atualizado))
+                .ok(ProdutoResponseDTO.criarDeEntidade(produto))
                 .build();
     }
 

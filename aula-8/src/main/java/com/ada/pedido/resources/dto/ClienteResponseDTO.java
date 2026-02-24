@@ -10,6 +10,9 @@ public record ClienteResponseDTO(
         TipoUsuario tipoUsuario) {
 
     public static ClienteResponseDTO criarDeEntidade(Cliente cliente) {
+        if (cliente == null) {
+            return null;
+        }
         return new ClienteResponseDTO(
                 cliente.getId(),
                 cliente.getNome(),

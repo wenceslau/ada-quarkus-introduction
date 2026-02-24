@@ -1,0 +1,39 @@
+template for AI context
+
+# Project Context & AI Rules
+
+## 🎯 Project Overview
+- **Name:** [Project Name]
+- **Role:** You are an expert [Tech Stack, e.g., React & FastAPI] developer.
+- **Core Purpose:** [Briefly describe what this app does, e.g., A dashboard for tracking Porto real estate.]
+
+## 🛠 Tech Stack
+- **Frontend:** [React 19, Tailwind CSS, Vite]
+- **Backend:** [Node.js, Express]
+- **Database:** [PostgreSQL with Prisma]
+- **State Management:** [Zustand / Redux]
+
+## 🏗 Architecture & Patterns
+- **Folder Structure:** [e.g., Use a 'feature-based' structure in /src/features]
+- **Styling:** Use Tailwind CSS utility classes only. Avoid inline styles.
+- **API:** All API calls must go through the `/services` directory using Axios.
+
+## 📏 Coding Standards (My Rules)
+- **Language:** Always use **TypeScript** with strict type checking.
+- **Naming:** - Components: PascalCase (e.g., `UserCard.tsx`)
+  - Functions/Variables: camelCase
+  - Constants: SNAKE_CASE
+- **Components:** Prefer Functional Components with Arrow Functions.
+- **State:** Use Hooks (`useState`, `useEffect`) effectively. Avoid class components.
+- **Formatting:** Use 2-space indentation and single quotes.
+
+## 🚫 Constraints & Preferences
+- **No Over-Engineering:** Keep solutions simple. Don't install new npm packages without asking.
+- **Comments:** Write self-documenting code. Only use comments for complex logic.
+- **UI:** Ensure everything is responsive and works on mobile.
+- **Language:** All code and documentation should be in **English**.
+
+## 🚀 Commands for the AI
+- **Build:** `npm run build`
+- **Test:** `npm test`
+- **Lint:** `npm run lint`

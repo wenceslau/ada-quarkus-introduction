@@ -2,6 +2,7 @@ package com.ada.pedido.security.jwt;
 
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.SignedJWT;
+import io.smallrye.jwt.auth.principal.JWTCallerPrincipal;
 import io.smallrye.jwt.auth.principal.ParseException;
 import io.smallrye.jwt.build.Jwt;
 import io.smallrye.jwt.build.JwtClaimsBuilder;
@@ -50,5 +51,6 @@ public class JWTService {
             throw new ParseException("Error validate token", e);
         }
     }
+
 
 }

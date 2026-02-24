@@ -2,10 +2,11 @@ package com.ada.pedido.services;
 
 import com.ada.pedido.repository.ClienteRepository;
 import com.ada.pedido.repository.entities.Cliente;
+import com.ada.pedido.repository.entities.TipoUsuario;
+import com.ada.pedido.resources.dto.ClienteDTO;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
-import jakarta.ws.rs.client.Client;
 
 import java.util.List;
 
@@ -18,12 +19,48 @@ public class ClienteService {
         this.clienteRepository = clienteRepository;
     }
 
-    public Cliente salvarCliente(Cliente cliente) {
+    @Transactional
+    public Cliente criarCliente(ClienteDTO clienteDTO) {
+
+        var cliente = clienteDTO.criarEntidade();
+
+        // RN: O cadastro publico sempre cria um CLIENTE, nunca um ADMIN
+        cliente.setTipoUsuario(TipoUsuario.CLIENTE);
+
         validarCliente(cliente);
+
         clienteRepository.persist(cliente);
+
         return cliente;
     }
 
+    @Transactional
+    public Cliente atualizarCliente(Long id, ClienteDTO clienteDTO) {
+
+        var cliente = buscarClientePorId(id);
+        clienteDTO.copiarParaEntidade(cliente);
+
+        validarCliente(cliente);
+
+        clienteRepository.persist(cliente);
+
+        return cliente;
+    }
+
+    @Transactional
+    public Cliente atualizarClienteParcial(Long id, ClienteDTO clienteDTO) {
+
+        var cliente = buscarClientePorId(id);
+        clienteDTO.copiarParaEntidadeNaoNulo(cliente);
+
+        validarCliente(cliente);
+
+        clienteRepository.persist(cliente);
+
+        return cliente;
+    }
+
+    @Transactional
     public void deletarCliente(Long id) {
         clienteRepository.deleteById(id);
     }
@@ -48,6 +85,5 @@ public class ClienteService {
             throw new IllegalArgumentException("Senha não pode ser vazia e deve ter no mínimo 8 caracteres!");
         }
     }
-
 
 }

@@ -3,6 +3,7 @@ package com.ada.pedido.services;
 import com.ada.pedido.repository.ProdutoRepository;
 import com.ada.pedido.repository.entities.Cliente;
 import com.ada.pedido.repository.entities.Produto;
+import com.ada.pedido.resources.dto.ProdutoDTO;
 import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.panache.common.Page;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -22,10 +23,39 @@ public class ProdutoService {
     }
 
     @Transactional
-    public Produto salvarProduto(Produto produto) {
+    public Produto criarProduto(ProdutoDTO produtoDTO) {
+
+        var produto = produtoDTO.criarEntidade();
         validarProduto(produto);
         produtoRepository.persist(produto);
         return produto;
+
+    }
+
+    @Transactional
+    public Produto atualizarProduto(Long id, ProdutoDTO produtoDTO) {
+
+        var produto = buscarProdutoPorId(id);
+        produtoDTO.copiarParaEntidade(produto);
+
+        validarProduto(produto);
+        produtoRepository.persist(produto);
+
+        return produto;
+
+    }
+
+    @Transactional
+    public Produto atualizarProdutoParcial(Long id, ProdutoDTO produtoDTO) {
+
+        var produto = buscarProdutoPorId(id);
+        produtoDTO.copiarParaEntidadeNaoNulo(produto);
+
+        validarProduto(produto);
+        produtoRepository.persist(produto);
+
+        return produto;
+
     }
 
     public Produto buscarProdutoPorId(Long id) {

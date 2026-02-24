@@ -2,7 +2,6 @@ package com.ada.pedido.resources;
 
 import com.ada.pedido.resources.dto.ClienteDTO;
 import com.ada.pedido.resources.dto.ClienteResponseDTO;
-import com.ada.pedido.repository.entities.TipoUsuario;
 import com.ada.pedido.services.ClienteService;
 import io.quarkus.security.Authenticated;
 import jakarta.annotation.security.PermitAll;
@@ -27,15 +26,9 @@ public class ClienteResource {
 
     @POST
     @PermitAll
-    @Transactional
     public Response criar(@Valid ClienteDTO clienteDTO) {
 
-        var entidade = clienteDTO.criarEntidade();
-
-        // RN: O cadastro publico sempre cria um CLIENTE, nunca um ADMIN
-        entidade.setTipoUsuario(TipoUsuario.CLIENTE);
-
-        var clienteCriado = clienteService.salvarCliente(entidade);
+        var clienteCriado = clienteService.criarCliente(clienteDTO);
 
         return Response
                 .status(Response.Status.CREATED)
@@ -48,8 +41,10 @@ public class ClienteResource {
     @Path("/{clienteId}")
     public Response buscarPorId(@PathParam("clienteId") Long id) {
 
+        var cliente = clienteService.buscarClientePorId(id);
+
         return Response
-                .ok(clienteService.buscarClientePorId(id))
+                .ok(ClienteResponseDTO.criarDeEntidade(cliente))
                 .build();
     }
 
@@ -70,40 +65,30 @@ public class ClienteResource {
     }
 
     @PUT
-    @Transactional
     @RolesAllowed("ADMIN")
     @Path("/{id}")
     public Response atualizar(@PathParam("id") Long id, @Valid ClienteDTO clienteDTO) {
 
-        var clienteAhAtualizar = clienteService.buscarClientePorId(id);
-        clienteDTO.copiarParaEntidade(clienteAhAtualizar);
-
-        var clienteAtualizado = clienteService.salvarCliente(clienteAhAtualizar);
+        var cliente = clienteService.atualizarCliente(id, clienteDTO);
 
         return Response
-                .ok(ClienteResponseDTO.criarDeEntidade(clienteAtualizado))
+                .ok(ClienteResponseDTO.criarDeEntidade(cliente))
                 .build();
     }
 
     @PATCH
-    @Transactional
     @RolesAllowed("ADMIN")
     @Path("/{id}")
-    public Response atualizacaoParcial(@PathParam("id") Long id, ClienteDTO cliente) {
+    public Response atualizacaoParcial(@PathParam("id") Long id, ClienteDTO clienteDTO) {
 
-        var clienteAhAtualizar = clienteService.buscarClientePorId(id);
-
-        cliente.copiarParaEntidadeNaoNulo(clienteAhAtualizar);
-
-        var clienteAtualizado = clienteService.salvarCliente(clienteAhAtualizar);
+        var cliente = clienteService.atualizarClienteParcial(id, clienteDTO);
 
         return Response
-                .ok(ClienteResponseDTO.criarDeEntidade(clienteAtualizado))
+                .ok(ClienteResponseDTO.criarDeEntidade(cliente))
                 .build();
     }
 
     @DELETE
-    @Transactional
     @RolesAllowed("ADMIN")
     @Path("/{id}")
     public Response deletar(@PathParam("id") Long id) {
