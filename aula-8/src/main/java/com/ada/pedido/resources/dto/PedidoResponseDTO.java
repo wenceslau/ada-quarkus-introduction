@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public record PedidoResponseDTO(
+        Long id,
         LocalDateTime data,
         String cliente,
         String status,
@@ -29,6 +30,7 @@ public record PedidoResponseDTO(
         }
 
         return new PedidoResponseDTO(
+                pedido.getId(),
                 pedido.getDataPedido(),
                 pedido.getCliente().getNome(),
                 pedido.getStatus().name(),

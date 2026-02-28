@@ -18,7 +18,7 @@ public class JWTService {
 
     private static final String ISSUER = "https://ada.com";
     private static final long DURATION = 1800; // 1/2 hour in seconds
-    private static final String SECRET = "4453fd5e8408dc24655669d0a37ef72e";
+    private static final String SECRET = "MySuperSecretKeyForTheAdaCourseThatIsAtLeast256BitsLong";
 
     public static String criarToken(String username, Set<String> roles) {
         JwtClaimsBuilder claimsBuilder = Jwt.claims()

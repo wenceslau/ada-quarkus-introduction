@@ -8,9 +8,11 @@ import com.ada.pedido.repository.entities.Pedido;
 import com.ada.pedido.repository.entities.StatusPedido;
 import com.ada.pedido.resources.dto.ItemPedidoDTO;
 import com.ada.pedido.resources.dto.PedidoDTO;
-import com.ada.pedido.resources.exception.PedidoException;
+import com.ada.pedido.services.pedido.PedidoException;
+import com.ada.pedido.services.pedido.ProcessarPedido;
 import io.quarkus.security.identity.SecurityIdentity;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Instance;
 import jakarta.transaction.Transactional;
 
 import java.time.LocalDateTime;
@@ -19,15 +21,20 @@ import java.util.List;
 @ApplicationScoped
 public class PedidoService {
 
+    private final Instance<ProcessarPedido> listaProcessarPedido;
     private final ProdutoRepository produtoRepository;
     private final ClienteRepository clienteRepository;
     private final PedidoRepository pedidoRepository;
     private final SecurityIdentity securityIdentity;
 
-    public PedidoService(ProdutoRepository produtoRepository,
+
+    public PedidoService(Instance<ProcessarPedido> listaProcessarPedido,
+                         ProdutoRepository produtoRepository,
                          ClienteRepository clienteRepository,
                          PedidoRepository pedidoRepository,
                          SecurityIdentity securityIdentity) {
+
+        this.listaProcessarPedido = listaProcessarPedido;
         this.produtoRepository = produtoRepository;
         this.clienteRepository = clienteRepository;
         this.pedidoRepository = pedidoRepository;
@@ -49,24 +56,22 @@ public class PedidoService {
         pedido.setCliente(cliente);
 
         var itens = pedidoDTO.itens().stream()
-                .map(itemPedidoRequest -> contruirItemPedido(itemPedidoRequest, pedido))
+                .map(itemPedidoRequest -> construirItemPedido(itemPedidoRequest, pedido))
                 .toList();
         pedido.setItens(itens);
 
-        // TODO implement processing 'pedido'
-        pedido.setStatus(StatusPedido.PROCESSADO);
+        listaProcessarPedido.forEach(processarPedidoService -> processarPedidoService.processar(pedido));
 
         if (pedido.getStatus().equals(StatusPedido.CANCELADO)) {
             throw new PedidoException("Pedido não pode ser realizado! " + pedido.getMensagemStatus());
         }
 
-        this.pedidoRepository.persist(pedido);
 
         return pedido;
 
     }
 
-    private ItemPedido contruirItemPedido(ItemPedidoDTO itemPedidoDTO, Pedido pedido) {
+    private ItemPedido construirItemPedido(ItemPedidoDTO itemPedidoDTO, Pedido pedido) {
 
         var produto = produtoRepository
                 .findByIdOptional(itemPedidoDTO.produtoId())

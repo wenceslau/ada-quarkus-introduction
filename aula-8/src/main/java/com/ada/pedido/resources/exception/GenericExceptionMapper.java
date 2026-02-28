@@ -1,5 +1,6 @@
 package com.ada.pedido.resources.exception;
 
+import com.ada.pedido.services.pedido.PedidoException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.WebApplicationException;
@@ -35,6 +36,13 @@ public class GenericExceptionMapper implements ExceptionMapper<Throwable> {
                     .entity(new ErrorResponse(
                             enfe.getClass().getName(),
                             enfe.getMessage(),
+                            LocalDateTime.now()
+                    ))
+                    .build();
+            case PedidoException pe -> Response.status(Response.Status.BAD_REQUEST)
+                    .entity(new ErrorResponse(
+                            pe.getClass().getName(),
+                            pe.getMessage(),
                             LocalDateTime.now()
                     ))
                     .build();
