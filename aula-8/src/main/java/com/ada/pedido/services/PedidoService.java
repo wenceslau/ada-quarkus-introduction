@@ -58,14 +58,16 @@ public class PedidoService {
         var itens = pedidoDTO.itens().stream()
                 .map(itemPedidoRequest -> construirItemPedido(itemPedidoRequest, pedido))
                 .toList();
+
         pedido.setItens(itens);
 
-        listaProcessarPedido.forEach(processarPedidoService -> processarPedidoService.processar(pedido));
+        for (ProcessarPedido processarPedido : listaProcessarPedido) {
+            processarPedido.processar(pedido);
+        }
 
         if (pedido.getStatus().equals(StatusPedido.CANCELADO)) {
             throw new PedidoException("Pedido não pode ser realizado! " + pedido.getMensagemStatus());
         }
-
 
         return pedido;
 

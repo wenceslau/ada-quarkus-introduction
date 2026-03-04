@@ -58,7 +58,7 @@ public class ProdutoService {
 
     }
 
-    public Produto buscarProdutoPorId(Long id) {
+    public Produto  buscarProdutoPorId(Long id) {
         return produtoRepository.findByIdOptional(id)
                 .orElseThrow(() -> new EntityNotFoundException("Produto não encontrado!"));
     }

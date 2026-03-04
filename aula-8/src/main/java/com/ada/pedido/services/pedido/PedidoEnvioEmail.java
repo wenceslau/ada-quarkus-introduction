@@ -15,14 +15,18 @@ public class PedidoEnvioEmail implements ProcessarPedido {
     public void processar(Pedido pedido) {
         System.out.println("Etapa enviar email");
 
+        // Try catch to avoid any rollback on the transaction
+        try {
+            var mensagem = criarMensagem(pedido);
+            var assunto = "Pedido " + pedido.getId() + " - " + pedido.getStatus();
 
-        var mensagem = criarMensagem(pedido);
-        var assunto = "Pedido " + pedido.getId() + " - " + pedido.getStatus();
+            System.out.printf("Enviando email para o cliente: %s com assunto: %s", pedido.getCliente().getEmail(), assunto);
+            System.out.println(mensagem);
 
-        System.out.printf("Enviando email para o cliente: %s com assunto: %s", pedido.getCliente().getEmail(), assunto);
-        System.out.println(mensagem);
-
-        // simulate email sent....
+            // simulate email sent....
+        } catch (Exception e) {
+            System.err.println("Erro ao enviar email: " + e.getMessage());
+        }
 
     }
 

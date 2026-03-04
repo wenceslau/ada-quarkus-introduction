@@ -25,7 +25,6 @@ public class PedidoBaixarEstoque implements ProcessarPedido {
     }
 
     @Override
-    @Transactional
     public void processar(Pedido pedido) {
         System.out.println("Etapa Baixar estoque");
 
