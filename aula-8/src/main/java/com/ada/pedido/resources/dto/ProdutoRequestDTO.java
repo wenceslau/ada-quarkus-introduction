@@ -5,7 +5,7 @@ import jakarta.validation.constraints.*;
 
 import java.math.BigDecimal;
 
-public record ProdutoDTO(
+public record ProdutoRequestDTO(
         @Size(max = 50, message = "Descrição deve ter no máximo 50 caracteres")
         @NotBlank(message = "Descrição é obrigatória")
         String descricao,

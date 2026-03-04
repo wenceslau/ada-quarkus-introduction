@@ -1,11 +1,8 @@
 package com.ada.pedido.services;
 
 import com.ada.pedido.repository.ProdutoRepository;
-import com.ada.pedido.repository.entities.Cliente;
 import com.ada.pedido.repository.entities.Produto;
-import com.ada.pedido.resources.dto.ProdutoDTO;
-import io.quarkus.hibernate.orm.panache.PanacheQuery;
-import io.quarkus.panache.common.Page;
+import com.ada.pedido.resources.dto.ProdutoRequestDTO;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -23,9 +20,9 @@ public class ProdutoService {
     }
 
     @Transactional
-    public Produto criarProduto(ProdutoDTO produtoDTO) {
+    public Produto criarProduto(ProdutoRequestDTO produtoRequestDTO) {
 
-        var produto = produtoDTO.criarEntidade();
+        var produto = produtoRequestDTO.criarEntidade();
         validarProduto(produto);
         produtoRepository.persist(produto);
         return produto;
@@ -33,10 +30,10 @@ public class ProdutoService {
     }
 
     @Transactional
-    public Produto atualizarProduto(Long id, ProdutoDTO produtoDTO) {
+    public Produto atualizarProduto(Long id, ProdutoRequestDTO produtoRequestDTO) {
 
         var produto = buscarProdutoPorId(id);
-        produtoDTO.copiarParaEntidade(produto);
+        produtoRequestDTO.copiarParaEntidade(produto);
 
         validarProduto(produto);
         produtoRepository.persist(produto);
@@ -46,10 +43,10 @@ public class ProdutoService {
     }
 
     @Transactional
-    public Produto atualizarProdutoParcial(Long id, ProdutoDTO produtoDTO) {
+    public Produto atualizarProdutoParcial(Long id, ProdutoRequestDTO produtoRequestDTO) {
 
         var produto = buscarProdutoPorId(id);
-        produtoDTO.copiarParaEntidadeNaoNulo(produto);
+        produtoRequestDTO.copiarParaEntidadeNaoNulo(produto);
 
         validarProduto(produto);
         produtoRepository.persist(produto);

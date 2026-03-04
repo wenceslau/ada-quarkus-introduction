@@ -1,5 +1,6 @@
 package com.ada.pedido.resources;
 
+import com.ada.pedido.repository.Cliente;
 import com.ada.pedido.repository.ClienteRepository;
 import com.ada.pedido.resources.dto.ClienteDTO;
 import jakarta.transaction.Transactional;
@@ -7,6 +8,8 @@ import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+
+import java.util.ArrayList;
 
 @Path("/clientes")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -23,11 +26,12 @@ public class ClienteResource {
     @Transactional
     public Response çriar(@Valid ClienteDTO cliente) {
 
-       clienteRepository.persist(cliente.criarEntidade());
+        Cliente entidade = cliente.criarEntidade();
+        clienteRepository.persist(entidade);
 
         return Response
                 .status(Response.Status.CREATED)
-                .entity(cliente)
+                .entity(ClienteDTO.criarDeEntidade(entidade))
                 .build();
     }
 
@@ -38,13 +42,10 @@ public class ClienteResource {
         var clienteOptional = clienteRepository.findByIdOptional(id);
 
         if (clienteOptional.isEmpty()) {
-            return Response
-                    .status(Response.Status.NOT_FOUND)
-                    .build();
-
+            throw new RuntimeException("Cliente não existe");
         }
         return Response
-                .ok(clienteOptional.get())
+                .ok(ClienteDTO.criarDeEntidade(clienteOptional.get()))
                 .build();
     }
 
@@ -53,60 +54,61 @@ public class ClienteResource {
 
         var listPaginada = clienteRepository.findAll();
 
+        var listDTO = new ArrayList<ClienteDTO>();
+        for (Cliente cliente : listPaginada.list()) {
+            listDTO.add(ClienteDTO.criarDeEntidade(cliente));
+        }
+
         return Response
-                .ok(listPaginada.list())
+                .ok(listDTO)
                 .build();
     }
 
     @PUT
     @Transactional
     @Path("/{id}")
-    public Response atualizar(@PathParam("id") Long id, @Valid ClienteDTO cliente) {
+    public Response atualizar(@PathParam("id") Long id, @Valid ClienteDTO clienteDTO) {
 
         var clienteOptional = clienteRepository.findByIdOptional(id);
 
         if (clienteOptional.isEmpty()) {
-            return Response
-                    .status(Response.Status.NOT_FOUND)
-                    .build();
+            throw new RuntimeException("Cliente não existe");
         }
 
         var clienteAhAtualizar = clienteOptional.get();
-        cliente.copiarParaEntidade(clienteAhAtualizar);
+        clienteDTO.copiarParaEntidade(clienteAhAtualizar);
 
         clienteRepository.persist(clienteAhAtualizar);
 
         return Response
-                .ok(clienteAhAtualizar)
+                .ok(ClienteDTO.criarDeEntidade(clienteAhAtualizar))
                 .build();
     }
 
     @PATCH
     @Transactional
     @Path("/{id}")
-    public Response atualizacaoParcial(@PathParam("id") Long id, ClienteDTO cliente) {
+    public Response atualizacaoParcial(@PathParam("id") Long id, ClienteDTO clienteDTO) {
 
-        if (cliente.nome() != null && cliente.nome().isEmpty()) {
+        if (clienteDTO.nome() != null && clienteDTO.nome().isEmpty()) {
             throw new IllegalArgumentException("Nome não pode ser vazio!");
         }
-        if (cliente.email() != null && cliente.email().isEmpty()) {
+        if (clienteDTO.email() != null && clienteDTO.email().isEmpty()) {
             throw new IllegalArgumentException("Email não pode ser vazio!");
         }
 
         var clienteOptional = clienteRepository.findByIdOptional(id);
 
         if (clienteOptional.isEmpty()) {
-            return Response
-                    .status(Response.Status.NOT_FOUND)
-                    .build();
+            throw new RuntimeException("Cliente não existe");
         }
         var clienteAhAtualizar = clienteOptional.get();
-        cliente.copiarParaEntidadeNaoNulo(clienteAhAtualizar);
+        clienteDTO.copiarParaEntidadeNaoNulo(clienteAhAtualizar);
 
         clienteRepository.persist(clienteAhAtualizar);
 
         return Response
-                .ok(clienteAhAtualizar)
+                .ok(ClienteDTO.criarDeEntidade(clienteAhAtualizar))
                 .build();
 
     }

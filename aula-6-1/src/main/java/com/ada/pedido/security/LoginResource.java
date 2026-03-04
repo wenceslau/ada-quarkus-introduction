@@ -29,16 +29,16 @@ public class LoginResource {
     @PermitAll
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response login(@Valid LoginRequest loginDto) {
+    public Response login(@Valid LoginRequest loginRequest) {
 
-        var optional = clienteRepository.buscarPorEmail(loginDto.email());
+        var optional = clienteRepository.buscarPorEmail(loginRequest.email());
         if (optional.isEmpty()) {
             return Response
                     .status(Response.Status.UNAUTHORIZED)
                     .build();
         }
         var cliente = optional.get();
-        if (!BcryptUtil.matches(loginDto.senha(), cliente.getSenha())) {
+        if (!BcryptUtil.matches(loginRequest.senha(), cliente.getSenha())) {
             return Response
                     .status(Response.Status.UNAUTHORIZED)
                     .build();

@@ -1,11 +1,10 @@
 package com.ada.pedido.resources;
 
-import com.ada.pedido.resources.dto.ProdutoDTO;
+import com.ada.pedido.resources.dto.ProdutoRequestDTO;
 import com.ada.pedido.resources.dto.ProdutoResponseDTO;
 import com.ada.pedido.services.ProdutoService;
 import io.quarkus.security.Authenticated;
 import jakarta.annotation.security.RolesAllowed;
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -25,9 +24,9 @@ public class ProdutoResource {
 
     @POST
     @RolesAllowed("ADMIN")
-    public Response criar(@Valid ProdutoDTO produtoDTO) {
+    public Response criar(@Valid ProdutoRequestDTO produtoRequestDTO) {
 
-        var produtoCriado = produtoService.criarProduto(produtoDTO);
+        var produtoCriado = produtoService.criarProduto(produtoRequestDTO);
 
         return Response
                 .status(Response.Status.CREATED)
@@ -38,9 +37,9 @@ public class ProdutoResource {
     @PUT
     @RolesAllowed("ADMIN")
     @Path("/{id}")
-    public Response atualizar(@PathParam("id") Long id, @Valid ProdutoDTO produtoDTO) {
+    public Response atualizar(@PathParam("id") Long id, @Valid ProdutoRequestDTO produtoRequestDTO) {
 
-        var produto = produtoService.atualizarProduto(id, produtoDTO);
+        var produto = produtoService.atualizarProduto(id, produtoRequestDTO);
 
         return Response
                 .ok(ProdutoResponseDTO.criarDeEntidade(produto))
@@ -50,9 +49,9 @@ public class ProdutoResource {
     @PATCH
     @RolesAllowed("ADMIN")
     @Path("/{id}")
-    public Response atualizacaoParcial(@PathParam("id") Long id, ProdutoDTO produtoDTO) {
+    public Response atualizacaoParcial(@PathParam("id") Long id, ProdutoRequestDTO produtoRequestDTO) {
 
-        var produto = produtoService.atualizarProdutoParcial(id, produtoDTO);
+        var produto = produtoService.atualizarProdutoParcial(id, produtoRequestDTO);
 
         return Response
                 .ok(ProdutoResponseDTO.criarDeEntidade(produto))
